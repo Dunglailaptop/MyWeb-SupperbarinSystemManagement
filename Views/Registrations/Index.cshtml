@@ -1,0 +1,292 @@
+﻿@model IEnumerable<SuperbrainManagement.Models.Registration>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Scripts  {
+    <script src="~/Ajax/Registrations.js"></script>
+
+}
+@{
+    var iteminfo = Session["infoUser"] as SuperbrainManagement.Models.Student;
+}
+
+<table class="table table-striped">
+    <tr>
+        <th>
+          
+            <div class="dropdown show" style="display: flex;/* position: relative; */justify-content: space-between;align-items: center;/* vertical-align: text-top; *//* margin-left:1000px; */">
+                <div>ĐĂNG KÝ KHÓA HỌC</div>
+               <style>
+                   .st {
+                       border: none;
+                       background-color: white;
+                       color: black;
+                   }
+               </style>
+                <a class="btn btn-secondary st" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    ...
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="#">In phiếu đăng ký tổng</a>
+                    <a class="dropdown-item" href="#">In phiếu đăng ký chi tiết</a>
+                    <a class="dropdown-item" href="#">Thu tiền</a>
+                    <a class="dropdown-item" href="#">Xét vào lớp</a>
+                    <a class="dropdown-item" href="#">Xóa phiếu đăng ký</a>
+                </div>
+            </div>
+        </th>
+      
+    </tr>
+    <tr>
+        <th>
+
+            <div class="row">
+                <div class="col" style="display:inline-flex;">
+                    <label class="col-lg-3 col-form-label form-control-label" style="  text-align: right;  padding-right: 10px;">Mã Hóa đơn</label>
+                    <div class="col-lg-9">
+                        <input type="text" id="IdRegistration" value="" name="id"  hidden/>
+                        <input class="form-control text-box single-line" style="border:none;" data-val="true" data-val-length="The field Name must be a string with a maximum length of 50." data-val-length-max="50" id="Bill" name="Name" type="text" value="" readonly>
+                    </div>
+
+                </div>
+                <div class="col" style="display:inline-flex;">
+                    <label class="col-lg-3 col-form-label form-control-label" style="  text-align: right;  padding-right: 10px;">Ngày</label>
+                    <div class="col-lg-9">
+                        <input class="form-control text-box single-line" style="border:none;" data-val="true" data-val-length="The field Username must be a string with a maximum length of 50." data-val-length-max="50" id="Datecreate" name="Username" type="text" value="" readonly>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </th>
+
+
+
+    </tr>
+    <tr>
+        <th>
+
+            <div class="row">
+                <div class="col" style="display:inline-flex;">
+                    <label class="col-lg-3 col-form-label form-control-label" style="  text-align: right;  padding-right: 10px;">Họ tên học viên</label>
+                    <div class="col-lg-9">
+
+                        <input class="form-control text-box single-line" style="border:none;" data-val="true" data-val-length="The field Name must be a string with a maximum length of 50." data-val-length-max="50" id="Name" name="Name" type="text" value="@iteminfo.Name" readonly>
+                    </div>
+
+                </div>
+                <div class="col" style="display:inline-flex;">
+                    <label class="col-lg-3 col-form-label form-control-label" style="  text-align: right;  padding-right: 10px;">Mã HV</label>
+                    <div class="col-lg-9">
+                        <input class="form-control text-box single-line" style="border:none;" data-val="true" data-val-length="The field Username must be a string with a maximum length of 50." data-val-length-max="50" id="Username" name="Username" type="text" value="@iteminfo.Code" readonly>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </th>
+    </tr>
+    <tr>
+        <th>
+            <div class="form-group row mt-2">
+
+                <label class="col-lg-3 col-form-label form-control-label" style="text-align: left;margin-left: 70px;">Ghi chú</label>
+                <div class="col-lg-8">
+
+                    <input class="form-control text-box single-line" style="
+    margin-left: -210px;" data-val="true" data-val-length="The field Name must be a string with a maximum length of 50." data-val-length-max="50" id="Name" name="Name" type="text" value="" readonly>
+                </div>
+
+
+            </div>
+        </th>
+    </tr>
+</table>
+<table class="table table-striped" style="  border: black; border-style: inset;">
+
+
+    <tr style=" text-align: right;">
+        <th style=" text-align: center;">STT</th>
+        <th style="text-align: left;">HỌ TÊN</th>
+        <th>SỐ LƯỢNG</th>
+        <th>ĐƠN GIÁ</th>
+        <td style=" text-align: center;">CK</td>
+        <td>THÀNH TIỀN</td>
+        <th>ACTION</th>
+    </tr>
+    <tbody id="dataBody">
+
+        @*<td style="text-align:center;">1</td>
+            <td style="text-align:left;">
+                TOÁN TRÍ TUỆ<br>Pre
+                Basic<br>Cấp độ: Basic
+            </td>
+            <td style="text-align:center;">
+                1
+            </td>
+            <td style="text-align:right;">
+                3,000,000
+            </td>
+            <td style="text-align:center;">
+                0
+            </td>
+            <td style="text-align:right;">
+                3,000,000
+            </td>
+            <td style="text-align:center;">
+                <a href="javascript:Del_listdangky('298123')" class="btn btn-sm btn-danger">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </td>*@
+
+
+
+
+    </tbody>
+    <tr>
+        <td colspan="4"></td>
+        <td style="text-align:right;">
+            Tổng
+            tiền:
+        </td>
+        <td style="text-align:right;">
+            <b class="total">0</b>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="4"></td>
+        <td style="text-align:right;">
+            Chiết
+            khấu:
+        </td>
+        <td style="text-align:right;">
+            <b>0</b>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="4"></td>
+        <td style="text-align:right;">
+            Tổng
+            thanh toán:
+        </td>
+        <td style="text-align:right;">
+            <b class="total">0</b>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="4"></td>
+        <td style="text-align:right;">
+            Đã thanh
+            toán:
+        </td>
+        <td style="text-align:right;">
+            <b>0</b>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="4"></td>
+        <td style="text-align:right;">
+            Còn
+            lại:
+        </td>
+        <td style="text-align:right;">
+            <b class="total">0</b>
+        </td>
+        <td></td>
+    </tr>
+</table>
+<button type="button" class="btn btn-success" onclick="getdatacombox(0)" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Thêm khóa học
+</button>
+<button type="button" class="btn btn-success" onclick="getdatacombox(0)" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Thêm vật tư 
+</button>
+<button type="button" class="btn btn-success" onclick="getdatacombox(0)" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Thu khác
+</button>
+<style>
+    .size {
+        font-size: 13px;
+    }
+</style>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="padding-right: -100px;margin-right: 110px;height: 100%;">
+        <div class="modal-content" style="height:70%;width: 600px;">
+            <div class="modal-header">
+                <h5 class="modal-title style" id="exampleModalLabel">Thêm khóa học</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row mt-2">
+                    <label class="col-lg-3 col-form-label form-control-label size">CHƯƠNG TRÌNH</label>
+                    <div class="col-lg-9">
+                        <select class="form-control IdEmployee" name="phonghoc0" id="programSelect" onchange="getdatacombox(this.value)">
+                            @{
+                                foreach (var item1 in Session["ListProgram"] as List<SuperbrainManagement.Models.Program>)
+                                {
+                                  
+                                    <option value="@item1.Id" data-name="@item1.Name">@item1.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row mt-2">
+                    <label class="col-lg-3 col-form-label form-control-label size">KHÓA HỌC</label>
+                    <div class="col-lg-9">
+                        <select class="form-control IdEmployee" name="phonghoc1" id="courseSelect">
+                            <!-- This select will be populated dynamically -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row mt-2">
+                    <label class="col-lg-3 col-form-label form-control-label size">HỌC PHÍ</label>
+                    <div class="col-lg-9">
+                        <input class="form-control" type="email" value="" id="textInput" readonly>
+                    </div>
+                </div>
+                <div class="form-group row mt-2">
+                    <label class="col-lg-3 col-form-label form-control-label size">CHƯƠNG TRÌNH KM</label>
+                    <div class="col-lg-9">
+                        <select class="form-control IdEmployee" name="phonghoc0" id="KM">
+                            @{
+                                foreach (var item3 in Session["promotion"] as List<SuperbrainManagement.Models.Promotion>)
+                                {
+                                    <option value="@item3.Id">@item3.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row mt-2">
+                    <label class="col-lg-3 col-form-label form-control-label size">kHUYẾN MÃI/CK</label>
+                    <div class="col-lg-9">
+                        <input class="form-control" type="email" value="0" readonly>
+                    </div>
+                </div>
+                <div class="form-group row mt-2">
+                    <label class="col-lg-3 col-form-label form-control-label size">HỌC PHÍ PHẢI THU</label>
+                    <div class="col-lg-9">
+                        <input class="form-control" type="email" value="" id="textInput2" readonly>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-success" onclick="savecartitem()">
+                    Thêm khóa học
+            </div>
+
+        </div>
+    </div>
+</div>

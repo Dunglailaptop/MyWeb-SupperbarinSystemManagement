@@ -1,0 +1,203 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts
+ {
+    <script src="~/Ajax/Users.js"></script>
+    <link href="~/assets/css/IconStatus.css" rel="stylesheet" />
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+}
+
+
+
+<label style="color: black; font-size: medium;font-weight: bold;padding-bottom:10px;">TÀI KHOẢN ĐĂNG NHẬP</label>
+<div class="navbar navbar-expand-lg">
+    <div class="" style="display: flex;justify-content: space-between;flex: 10px;">
+        <div class="form-group has-search" style="display: flex;">
+            <span class="fa fa-search form-control-feedback" style="z-index: 1;position: absolute;margin-top: 12px;margin-left: 10px;"></span>
+            <input type="text" class="form-control" placeholder="Search" style="padding-left: 30px;"  id="searchtxt" name="searchtxt">
+        </div>
+        <div>
+            <button class="btn btn-light" type="submit" ><span class="fa fa-filter" style="padding-right:5px;"></span>Filter</button>
+            <button class="btn btn-primary" type="submit" data-bs-toggle="modal" data-bs-target="#exampleModalLong"><span class="fa fa-plus" style="padding-right:5px;"></span>Add New</button>
+        </div>
+
+    </div>
+</div>
+<div>
+    <table class="table table-bordered table-hover ">
+
+        <thead class="rounded-top table-light">
+            <tr>
+                <th>STT</th>
+                <th>USER</th>
+                <th>HỌ TÊN</th>
+                <th>CHI NHÁNH</th>
+                <th>CẤP BẬC</th>
+                <th>NGÀY CẬP NHẬT</th>
+                <th>TRẠNG THÁI</th>
+                <th>THỜI HẠN</th>
+                <th>CHỨC NĂNG</th>
+            </tr>
+        </thead>
+        <tbody id="databody">
+
+        </tbody>
+
+      
+
+    </table>
+
+</div>
+<div class="navbar">
+    <div>
+        <button style="  border: none;  padding-right: 5px; padding-left: 5px;border-radius: 3px;">
+            <i class="fa fa-angle-left" aria-hidden="true"></i>
+        </button>
+    </div>
+    <div style="">
+        <label style="padding: 10px;">1</label><label style=" padding: 10px;background-color: lightgrey;border-radius: 3px;">2</label>
+        <label style="padding: 5px;">...</label>
+        <label style="padding: 10px;">3</label>
+        <label style=" padding: 10px;">4</label>
+    </div>
+    <div>
+        <button style="  border: none;  padding-right: 5px; padding-left: 5px;border-radius: 3px;"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width:800px;">
+            <div class="modal-header">
+                <h5 class="modal-fullscreen" id="exampleModalLabel">Phân quyền</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="vehicleForm">
+                    <table cellpadding="0" cellspacing="0" border="0" class="table" id="datatable">
+                        <colgroup>
+                            <col class="con0">
+                            <col class="con1">
+                            <col class="con0">
+                            <col class="con1">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th rowspan="2" style="width:400px">Chức năng</th>
+                                <th colspan="4" style="text-align:center"> Quyền cho phép</th>
+                            </tr>
+                            <tr>
+
+                                <th class="head1" style="text-align:left"> xem</th>
+                                <th class="head0" style="text-align:left">  <i>Thêm </i></th>
+                                <th class="head0" style="text-align:left"> <i>Sửa</i></th>
+                                <th class="head0" style="text-align:left">  <i>Xóa</i></th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+
+
+
+                    </table>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" id="submitButton" value="Submit" onclick="saveChange()" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit -->
+<style>
+    .editModalText {
+        display:flex;
+        align-items:center;
+        padding:10px;
+    }
+</style>
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Sửa thông tin đăng nhập</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" style="border:none;background-color:white;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+            <hr>
+            <div class="modal-body">
+                <div class="section" style="">
+                    <div id="ctl10_NaKhoahoc"></div>
+                    <form id="formlenh">
+                        <input name="ctl10$idusers" type="hidden" id="idusers" value="1">
+                        <div class="section editModalText">
+                            <div class="col-sm-2">   <label> Họ tên</label></div>
+                            <div class="col-sm-10">
+                                <input name="ctl10$hoten" type="text" id="hoten" class=" form-control" value="admin">
+                            </div>
+                        </div>
+                        <div class="section editModalText">
+                            <div class="col-sm-2">
+                                <label> Tên đăng nhập </label>
+                            </div>
+                            <div class="col-sm-10">   <input name="ctl10$usersname" type="text" id="usersname" class=" form-control" value="ad" readonly="true">      </div>
+                        </div>
+                        <div class="section editModalText">
+                            <div class="col-sm-2">
+                                <label> Mật Khẩu</label>
+                            </div>
+                            <div class="col-sm-10"><input name="ctl10$password" type="password" id="password" class="form-control">      </div>
+                        </div>
+                        <div class="section editModalText">
+                            <div class="col-sm-2"> <label> Chi nhánh:</label></div>
+                            <div class="col-sm-10">
+                                <select name="ctl10$chinhanh" id="chinhanh" class="form-control" disabled=" disabled">
+                                    <option selected="selected" value="1">HEAD QUARTER</option>
+                                    <option value="5217">Superbrain Thủ Đức</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="section editModalText">
+                            <div class="col-sm-2"><label> Cấp Bậc:</label></div>
+                            <div class="col-sm-10">
+                                <select name="ctl10$lever" id="lever" class="form-control">
+                                    <option value="0">Nhân sự</option>
+                                    <option value="1">Quản lý</option>
+                                    <option selected="selected" value="2">Admin</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="section editModalText">
+                            <div class="col-sm-2">   <label> Ghi chú</label></div>
+                            <div class="col-sm-10"><input name="ctl10$ghichu" type="text" id="ghichu" class="  form-control">    </div>
+                        </div>
+                        <div class="clear"></div>
+                        <span id="ctl10_msg" style="color:red"></span>
+                        <div class="section">
+
+
+
+
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">cập nhật</button>
+            </div>
+        </div>
+    </div>
+</div>

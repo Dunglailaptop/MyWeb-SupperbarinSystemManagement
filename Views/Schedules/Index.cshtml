@@ -1,0 +1,229 @@
+﻿@model IEnumerable<SuperbrainManagement.Models.Schedule>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+
+    <script>
+   
+        function closeModalAndReloadPage() {
+            // Đóng modal
+            $('#exampleModal').modal('hide');
+
+            // Làm mới trang
+            location.reload();
+        }
+        
+        function updateCheckboxValue(checkbox) {
+            // Kiểm tra xem checkbox có được chọn hay không
+            var value = checkbox.checked ? true : false;
+
+            // Gán giá trị cho checkbox
+            checkbox.value = value;
+
+            // In giá trị của checkbox ra console để kiểm tra
+            console.log("Checkbox value updated to: " + value);
+        }
+        function SaveChange() {
+    // Prevent form submission
+
+
+    // Create a new instance of the Vehicle class and populate its properties
+
+    // Create an array to hold permissions
+    var Permissions = [];
+
+    // Populate the permissions array with data from form inputs
+    $(".permission").each(function () {
+        var permission = {
+            IdEmployee: $(this).find(".IdEmployee").val(),
+            IdClass: $(this).find(".IdClass").val(),
+            IdRoom: $(this).find(".IdRoom").val(),
+            IdUser: $(this).find(".IdUser").val(),
+            IdWeek: $(this).find(".IdWeek").val(),
+            Active: $(this).find(".Active").val()
+        };
+        Permissions.push(permission);
+    });
+
+
+
+    // AJAX request to submit the data
+    $.ajax({
+        type: "POST",
+        url: '@Url.Action("updateActive", "Schedules")', // Replace with your controller's action method URL
+        data: JSON.stringify(Permissions),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            // Handle the response from the controller if needed
+            console.log("Data submitted successfully to the controller.");
+            console.log("Response from the controller:", response);
+            closeModalAndReloadPage();
+          
+        },
+        error: function (xhr, status, error) {
+            // Handle errors here
+            console.error("Error submitting data to the controller:", status, error);
+        }
+    });
+
+        };
+        function show() {
+            alert('Cập nhật thành công');
+        };
+    </script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.0/css/boxicons.min.css"
+          integrity="sha512-pVCM5+SN2+qwj36KonHToF2p1oIvoU3bsqxphdOIWMYmgr4ZqD3t5DjKvvetKhXGc/ZG5REYTT6ltKfExEei/Q=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+}
+
+
+                <table class="table table-striped">
+                 
+                        <tr >
+                            <th >STT</th>
+                            <th >TÊN LỚP</th>
+                            <th >DIỆN GIẢI</th>
+                            <th >THỜI KHÓA BIỂU</th>
+                            <th >SỈ SỐ</th>
+                            <th >CHỨC NĂNG</th>
+                        </tr>
+                 
+                   
+                        @{
+                            int a = 1;
+                        }
+                        @foreach (var item in Session["datasche"] as List<SuperbrainManagement.Controllers.SchedulesController.SchedulesRes>)
+                        {
+                            <tr>
+                                <td >@a</td>
+                                <td >@item.NameClass</td>
+                                <td ></td>
+                                <td>@item.allSchedules</td>
+                                <td >1</td>
+                                <td >
+                                    <ul class="list-inline mb-0" style="width:200px;">
+                                        <li class="list-inline-item">
+                                            <a href="javascript:void(0);"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-placement="top"
+                                               title="Edit"
+                                               class="px-2 text-primary">
+                                                <i class="bx bx-pencil font-size-18"></i>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <a href="javascript:void(0);"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-placement="top"
+                                               title="Delete"
+                                               class="px-2 text-danger">
+                                                <i class="bx bx-trash-alt font-size-18"></i>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item dropdown">
+                                            <a class="text-muted dropdown-toggle font-size-18 px-2"
+                                               href="#" id="drop"
+                                               data-bs-toggle="dropdown"
+                                               aria-expanded="false">
+                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="drop2" data-bs-popper="static">
+                                                <a class="dropdown-item" href="#" onclick="" data-bs-toggle="modal" data-bs-target="#exampleModal">Thời khóa biểu</a>
+                                                @*<a class="dropdown-item" href="#">Another action</a>
+                                                    <a class="dropdown-item" href="#">Something else here</a>*@
+                                            </div>
+                                        </li>
+
+
+
+                                    </ul>
+                                </td>
+
+                            </tr>
+                            a++;
+                        }
+                   
+                </table>
+     
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="margin-top: 100px;width: 1200px;margin-left: -300px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cập nhật Thời Khóa Biểu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+
+                    <tr>
+                        <th>KÍCH HOẠT</th>
+                        <th>TÊN</th>
+                        <th>TỪ GIỜ</th>
+                        <th>ĐẾN GIỜ</th>
+                        <th>GIÁO VIÊN</th>
+                        <th>PHÒNG HỌC</th>
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="permission">
+                            <td>
+                                <input class="Active" onclick="updateCheckboxValue(this)" value="@(item.Active.HasValue && item.Active.Value ? true:false)" type="checkbox" @(item.Active.HasValue && item.Active.Value ? "checked" : "") />
+                                <input class="IdUser" value="@item.IdUser" hidden />
+                                <input class="IdClass" value="@item.IdClass" hidden />
+                                <input class="IdWeek" value="@item.IdWeek" hidden />
+                            </td>
+                            <td>
+                               @SuperbrainManagement.Controllers.SchedulesController.line_week(Convert.ToInt32(item.IdWeek))
+                            </td>
+                            <td>
+                                <input  type="text" value="@SuperbrainManagement.Controllers.SchedulesController.ConvertToTimeString(Convert.ToDateTime(item.FromHour))"/>
+
+                            </td>
+                            <td>
+                                <input type="text" value="@SuperbrainManagement.Controllers.SchedulesController.ConvertToTimeString(Convert.ToDateTime(item.ToHour))" />
+                            </td>
+                            <td>
+                               
+
+                            <select class="form-control IdEmployee" name="phonghoc0">
+                                @foreach (var item2 in Session["listEmployee"] as List<SuperbrainManagement.Models.Employee>)
+                                {
+                                <option value="@item2.Id" @(item.IdEmployee == item2.Id ? "selected" : "")>@item2.Name</option>
+                                }
+
+
+                                </select>
+
+                            </td>
+                            <td>
+
+                                <select class="form-control IdRoom" name="phonghoc0">
+                                    @foreach (var item3 in Session["listRoom"] as List<SuperbrainManagement.Models.Room>)
+                                    {
+                                        <option value="@item3.Id" @(item.IdRoom == item3.Id ? "selected" : "")>@item3.Name</option>
+                                    }
+
+
+                                </select>
+                            </td>
+                        </tr>
+                    }
+                    </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" onclick="SaveChange()" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
