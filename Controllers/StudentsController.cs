@@ -17,7 +17,79 @@ namespace SuperbrainManagement.Controllers
     public class StudentsController : Controller
     {
         private ModelDbContext db = new ModelDbContext();
+        static string[] ones = { "", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín" };
+        static string[] teens = { "mười", "mười một", "mười hai", "mười ba", "mười bốn", "mười lăm", "mười sáu", "mười bảy", "mười tám", "mười chín" };
+        static string[] tens = { "", "mười", "hai mươi", "ba mươi", "bốn mươi", "năm mươi", "sáu mươi", "bảy mươi", "tám mươi", "chín mươi" };
+        static string[] thousandsGroups = { "", " nghìn", " triệu", " tỷ" };
 
+        static string ConvertThreeDigitGroup(int threeDigits)
+        {
+            string groupText = "";
+
+            // Trường hợp hàng trăm
+            if (threeDigits >= 100)
+            {
+                groupText += ones[threeDigits / 100] + " trăm ";
+                threeDigits %= 100;
+            }
+
+            // Trường hợp hàng chục và hàng đơn vị
+            if (threeDigits >= 10 && threeDigits <= 19)
+            {
+                groupText += teens[threeDigits - 10];
+            }
+            else if (threeDigits >= 20)
+            {
+                groupText += tens[threeDigits / 10];
+                threeDigits %= 10;
+                if (threeDigits > 0)
+                {
+                    groupText += " " + ones[threeDigits];
+                }
+            }
+            else if (threeDigits > 0)
+            {
+                groupText += ones[threeDigits];
+            }
+
+            return groupText;
+        }
+
+        static string ConvertToWords(long number)
+        {
+            if (number == 0)
+            {
+                return "Không đồng";
+            }
+
+            string prefix = "";
+
+            if (number < 0)
+            {
+                number = -number;
+                prefix = "Âm ";
+            }
+
+            string suffix = "";
+
+            int groupIndex = 0;
+            string result = "";
+
+            do
+            {
+                int threeDigits = (int)(number % 1000);
+                if (threeDigits != 0)
+                {
+                    string groupText = ConvertThreeDigitGroup(threeDigits);
+                    groupText += thousandsGroups[groupIndex];
+                    result = groupText + suffix + result;
+                }
+                groupIndex++;
+                number /= 1000;
+            } while (number > 0);
+
+            return prefix + result.Trim();
+        }
         // GET: Students
         public ActionResult Index()
         {
@@ -39,17 +111,21 @@ namespace SuperbrainManagement.Controllers
            
             Registration registration = Connect.SelectSingle<Registration>("Select * from Registration where Id = '" + idregistration + "'");
             DataTable datatable = Connect.SelectAll("select course.Name,course.Price,rescourse.TotalAmount from Registration  res\r\ninner join RegistrationCourse rescourse\r\non rescourse.IdRegistration = res.Id\r\ninner join Course course \r\non course.Id = rescourse.IdCourse\r\nwhere res.Id = '" + idregistration+"'");
+           
             var model = new
             {
                 DataTableLoad = datatable
             };
             if (student != null)
             {
+                int price = Convert.ToInt32(registration.TotalAmount);
+                string priceFormatted = string.Format("{0:#,##0} VND", price);
                 Session["Name"] = student.Name;
                 Session["code"] = registration.Code;
                 Session["Datecreate"] = registration.DateCreate;
-                Session["totalamount"] = registration.TotalAmount;
+                Session["totalamount"] = priceFormatted;
                 Session["datatable"] = datatable;
+                Session["PriceVND"] = ConvertToWords((long)registration.TotalAmount);
             }
           
             return View(model);

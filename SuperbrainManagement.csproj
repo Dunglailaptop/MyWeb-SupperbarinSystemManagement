@@ -780,10 +780,6 @@
     <Content Include="Views\Users\Details.cshtml" />
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
-    <Content Include="Views\Students\Create.cshtml" />
-    <Content Include="Views\Students\Delete.cshtml" />
-    <Content Include="Views\Students\Details.cshtml" />
-    <Content Include="Views\Students\Edit.cshtml" />
     <Content Include="Views\Students\Index.cshtml" />
     <Content Include="Views\Classes\Create.cshtml" />
     <Content Include="Views\Classes\Delete.cshtml" />
@@ -795,11 +791,6 @@
     <Content Include="Views\Rooms\Details.cshtml" />
     <Content Include="Views\Rooms\Edit.cshtml" />
     <Content Include="Views\Rooms\Index.cshtml" />
-    <Content Include="Views\Registrations\Create.cshtml" />
-    <Content Include="Views\Registrations\Delete.cshtml" />
-    <Content Include="Views\Registrations\Details.cshtml" />
-    <Content Include="Views\Registrations\Edit.cshtml" />
-    <Content Include="Views\Registrations\Index.cshtml" />
     <Content Include="Views\RegistrationCourses\Create.cshtml" />
     <Content Include="Views\RegistrationCourses\Delete.cshtml" />
     <Content Include="Views\RegistrationCourses\Details.cshtml" />
@@ -837,6 +828,7 @@
     <Content Include="Views\ProductCourses\Edit.cshtml" />
     <Content Include="Views\ProductCourses\Index.cshtml" />
     <Content Include="Views\Students\RegistrationPrints.cshtml" />
+    <Content Include="Views\Registrations\RegistrationListView.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
