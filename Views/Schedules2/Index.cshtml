@@ -8,7 +8,7 @@
 @section Scripts {
 
     <script>
-   
+
         function closeModalAndReloadPage() {
             // Đóng modal
             $('#exampleModal').modal('hide');
@@ -16,7 +16,7 @@
             // Làm mới trang
             location.reload();
         }
-        
+
         function updateCheckboxValue(checkbox) {
             // Kiểm tra xem checkbox có được chọn hay không
             var value = checkbox.checked ? true : false;
@@ -54,7 +54,7 @@
     // AJAX request to submit the data
     $.ajax({
         type: "POST",
-        url: '@Url.Action("updateActive", "Schedules")', // Replace with your controller's action method URL
+        url: '@Url.Action("updateActive", "Schedules2")', // Replace with your controller's action method URL
         data: JSON.stringify(Permissions),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -63,7 +63,7 @@
             console.log("Data submitted successfully to the controller.");
             console.log("Response from the controller:", response);
             closeModalAndReloadPage();
-          
+
         },
         error: function (xhr, status, error) {
             // Handle errors here
@@ -83,75 +83,86 @@
 
 }
 
-
-                <table class="table table-striped">
-                 
-                        <tr >
-                            <th >STT</th>
-                            <th >TÊN LỚP</th>
-                            <th >DIỆN GIẢI</th>
-                            <th >THỜI KHÓA BIỂU</th>
-                            <th >SỈ SỐ</th>
-                            <th >CHỨC NĂNG</th>
-                        </tr>
-                 
-                   
-                        @{
-                            int a = 1;
-                        }
-                        @foreach (var item in Session["datasche"] as List<SuperbrainManagement.Controllers.Schedules2Controller.SchedulesRes>)
-                        {
-                            <tr>
-                                <td >@a</td>
-                                <td >@item.NameClass</td>
-                                <td ></td>
-                                <td>@item.allSchedules</td>
-                                <td >1</td>
-                                <td >
-                                    <ul class="list-inline mb-0" style="width:200px;">
-                                        <li class="list-inline-item">
-                                            <a href="javascript:void(0);"
-                                               data-bs-toggle="tooltip"
-                                               data-bs-placement="top"
-                                               title="Edit"
-                                               class="px-2 text-primary">
-                                                <i class="bx bx-pencil font-size-18"></i>
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a href="javascript:void(0);"
-                                               data-bs-toggle="tooltip"
-                                               data-bs-placement="top"
-                                               title="Delete"
-                                               class="px-2 text-danger">
-                                                <i class="bx bx-trash-alt font-size-18"></i>
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item dropdown">
-                                            <a class="text-muted dropdown-toggle font-size-18 px-2"
-                                               href="#" id="drop"
-                                               data-bs-toggle="dropdown"
-                                               aria-expanded="false">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="drop2" data-bs-popper="static">
-                                                <a class="dropdown-item" href="#" onclick="" data-bs-toggle="modal" data-bs-target="#exampleModal">Thời khóa biểu</a>
-                                                @*<a class="dropdown-item" href="#">Another action</a>
-                                                    <a class="dropdown-item" href="#">Something else here</a>*@
-                                            </div>
-                                        </li>
+<div class="row">
+    <div class="col col-md-4 col-sm-12">
+        <form action="/Branches" method="get">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="searchString" placeholder="Tìm kiếm" value="@ViewBag.CurrentFilter ">
+                <button class="input-group-text bg-success" id="basic-addon2" type="submit"><i class="ti ti-search text-white"></i></button>
+            </div>
+        </form>
+    </div>
+    <div class="col col-md-8 col-sm-12 text-right" style="text-align:right;">
+        <div class="me-0 btn btn-md p-0">
+            <button class="btn btn-md btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="ti ti-arrows-sort"></i> Sắp xếp theo
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="@Url.Action("Index", new { sortOrder = "name", currentFilter = ViewBag.CurrentFilter, searchString = ViewBag.CurrentFilter })"><i class="ti ti-sort-a-z"></i> Tên A-Z</a></li>
+                <li><a class="dropdown-item" href="@Url.Action("Index", new { sortOrder = "name", currentFilter = ViewBag.CurrentFilter, searchString = ViewBag.CurrentFilter })"><i class="ti ti-sort-a-z"></i> Tên A-Z</a></li>
+                <li><a class="dropdown-item" href="@Url.Action("Index", new { sortOrder = "name_desc", currentFilter = ViewBag.CurrentFilter, searchString = ViewBag.CurrentFilter })"><i class="ti ti-sort-z-a"></i> Tên Z-A</a></li>
+                <li><a class="dropdown-item" href="@Url.Action("Index", new { sortOrder = "date", currentFilter = ViewBag.CurrentFilter, searchString = ViewBag.CurrentFilter })"><i class="ti ti-sort-ascending"></i> Mới nhất</a></li>
+                <li><a class="dropdown-item" href="@Url.Action("Index", new { sortOrder = "date_desc", currentFilter = ViewBag.CurrentFilter, searchString = ViewBag.CurrentFilter })"><i class="ti ti-sort-descending"></i> Cũ nhất</a></li>
+            </ul>
+        </div>
+        <a href="" class="btn btn-md btn-outline-success"><i class="ti ti-upload"></i></a>
+        <a href="" class="btn btn-md btn-outline-danger"><i class="ti ti-download"></i></a>
+        <a href="/branches/create" class="btn btn-md btn-success ms-0"><i class="ti ti-circle-plus"></i> Thêm mới</a>
+    </div>
+</div>
+<table class="table fs-3">
+    <thead class="bg-success text-white rounded-1">
+        <tr>
+            <th class="text-center">STT</th>
+            <th class="text-center">TÊN LỚP</th>
+            <th>DIỆN GIẢI</th>
+            <th>THỜI KHÓA BIỂU</th>
+            <th>SỈ SỐ</th>
+            <th>CHỨC NĂNG</th>
+        </tr>
+    </thead>
 
 
+    @{
+        int a = 1;
+    }
+    @foreach (var item in Session["datasche"] as List<SuperbrainManagement.Controllers.Schedules2Controller.SchedulesRes>)
+    {
+        <tr>
+            <td class="text-center">
+                @a
+            </td>
+            <td class="text-center">
+               
+                @Html.DisplayFor(modelItem => @item.NameClass)
+            </td>
+            <td>
+              1
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @item.allSchedules)
+            </td>
+            <td>
+              1
+            </td>
+           
+            <td>
+                <a href="" class="me-1"><i class="ti ti-edit text-primary"></i></a>
+                <a href="" class="me-1"><i class="ti ti-trash text-danger"></i></a>
+                <a class="text-warning" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="ti ti-dots-vertical"></i>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="ti ti-settings"></i> Thời khóa biểu</a></li>
+                  
+                </ul>
+            </td>
+        </tr>
+        a++;
+    }
+</table>
 
-                                    </ul>
-                                </td>
 
-                            </tr>
-                            a++;
-                        }
-                   
-                </table>
-     
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -183,23 +194,23 @@
                                 <input class="IdWeek" value="@item.IdWeek" hidden />
                             </td>
                             <td>
-                               @SuperbrainManagement.Controllers.Schedules2Controller.line_week(Convert.ToInt32(item.IdWeek))
+                                @SuperbrainManagement.Controllers.Schedules2Controller.line_week(Convert.ToInt32(item.IdWeek))
                             </td>
                             <td>
-                                <input  type="text" value="@SuperbrainManagement.Controllers.Schedules2Controller.ConvertToTimeString(Convert.ToDateTime(item.FromHour))"/>
+                                <input type="text" value="@SuperbrainManagement.Controllers.Schedules2Controller.ConvertToTimeString(Convert.ToDateTime(item.FromHour))" />
 
                             </td>
                             <td>
                                 <input type="text" value="@SuperbrainManagement.Controllers.Schedules2Controller.ConvertToTimeString(Convert.ToDateTime(item.ToHour))" />
                             </td>
                             <td>
-                               
 
-                            <select class="form-control IdEmployee" name="phonghoc0">
-                                @foreach (var item2 in Session["listEmployee"] as List<SuperbrainManagement.Models.Employee>)
-                                {
-                                <option value="@item2.Id" @(item.IdEmployee == item2.Id ? "selected" : "")>@item2.Name</option>
-                                }
+
+                                <select class="form-control IdEmployee" name="phonghoc0">
+                                    @foreach (var item2 in Session["listEmployee"] as List<SuperbrainManagement.Models.Employee>)
+                                    {
+                                        <option value="@item2.Id" @(item.IdEmployee == item2.Id ? "selected" : "")>@item2.Name</option>
+                                    }
 
 
                                 </select>
@@ -218,7 +229,7 @@
                             </td>
                         </tr>
                     }
-                    </table>
+                </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
