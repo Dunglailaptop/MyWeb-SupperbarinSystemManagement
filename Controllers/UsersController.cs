@@ -6,66 +6,59 @@ using System.EnterpriseServices;
 using System.Linq;
 using System.Net;
 using System.Security;
-using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.UI.WebControls;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using SuperbrainManagement.Models;
-using SuperbrainManagement.Views.ConfigView;
 
 namespace SuperbrainManagement.Controllers
 {
     public class UsersController : Controller
     {
         private ModelDbContext db = new ModelDbContext();
-        //FUNCTION LOAD_DATA USERS
-        public ActionResult Index()
+        //CLASS RESPONSE DATA
+        public class Innerjoin
         {
-            return View();
+            public string Name { get; set; }
+            public string code { get; set; }
+            public int iduserAccount { get; set; }
+            public List<Permissionse> Permissions { get; set; }
 
         }
-        [HttpGet]
-        public ActionResult LoadData()
+        public class Permissionse
         {
-            DataTable DataTableUsers = Connect.SelectAll("select ROW_NUMBER() OVER (ORDER BY users.id) AS stt,users.Id,users.Name,users.Username,users.Active,users.DateCreate from dbo.[User] users inner join Branch branchs on branchs.Id = users.IdBranch \r\n");
-            StringBuilder htmlBuilder = new StringBuilder();
-            foreach (DataRow row in DataTableUsers.Rows) {
-                htmlBuilder.Append("<tr class=\"bordered-bottom\">");
-                htmlBuilder.AppendFormat("<td>{0}</td>", row["stt"]);
-                htmlBuilder.AppendFormat("<td>{0}</td>", row["Username"]);
-                htmlBuilder.AppendFormat("<td>{0}</td>", row["Name"]);
-                htmlBuilder.Append("<td></td>"); // Placeholder for your additional data
-                htmlBuilder.Append("<td>1</td>"); // Placeholder for your additional data
-                htmlBuilder.AppendFormat("<td>{0}</td>", row["DateCreate"]);
-                htmlBuilder.Append("<td>");
-                htmlBuilder.Append("<label class=\"custom-control ios-switch\">");
-                htmlBuilder.AppendFormat("<input data-id=\"{0}\" value=\"{1}\" type=\"checkbox\" class=\"ios-switch-control-input\" onclick=\"ChangeStatus(this)\" {2}>",
-                    row["Id"],
-                    row["Active"] != DBNull.Value && Convert.ToBoolean(row["Active"]) ? 0 : 1,
-                    row["Active"] != DBNull.Value && Convert.ToBoolean(row["Active"]) ? "checked" : "");
-                htmlBuilder.Append("<span class=\"ios-switch-control-indicator\"></span>");
-                htmlBuilder.Append("</label>");
-                htmlBuilder.Append("</td>");
-                var id = Convert.ToInt32(row["Id"]);
-                var permissions = new List<string> { "Phân quyền" };
-                htmlBuilder.Append("<td></td>");
-                htmlBuilder.Append("<td>" + ConfigHtml.GenerateInlineList(Convert.ToInt32(row["Id"]),permissions)+"</td>"); // Placeholder for your additional data
-                htmlBuilder.Append("</tr>");
-            }
-            return Json(htmlBuilder.ToString(),JsonRequestBehavior.AllowGet);
+            public int id { get; set; }
+            public string code { get; set; }
+            public string Name { get; set; }
+            public bool IsRead { get; set; }
+            public bool IsCreate { get; set; }
+            public bool IsEdit { get; set; }
+            public bool IsDelete { get; set; }
         }
-        //FUNCTION GET DATA WITH PERMISSION ID
-        [HttpGet]
-        public ActionResult getDataWithIdPermission(int idUserAccount)
+        public class UserpermissionRes
         {
-          
-            List<UserPermission> userPermissions = Connect.Select<UserPermission>("select * from UserPermission where IdUser = '" + idUserAccount + "'");
-            List<object> data = new List<object>();
-            if(userPermissions.Count > 0)
+            public int IdPermission { get; set; }
+            public int IsRead { get; set; }
+            public int IsCreate { get; set; }
+            public int IsDelete { get; set; }
+
+            public int IsEdit { get; set; }
+        }
+
+        // GET LIST PERMISSION
+        [HttpGet]
+        public ActionResult GetDataPermissionWithid(int idInput)
+        {
+            Console.WriteLine(idInput);
+            Session["iduseraccount"] = idInput;
+            List<UserPermission> userPermissions = Connect.Select<UserPermission>("select * from UserPermission where IdUser = '" + idInput + "'");
+            List<Innerjoin> Model = new List<Innerjoin>();
+
+            if (userPermissions.Count > 0)
             {
-               data = loaddatapermission(idUserAccount);
-            }else
+                Model = LoadDataPermission(idInput);
+            }
+            else
             {
                 List<Permission> permissions = Connect.Select<Permission>("select * from Permission");
                 // Create a new UserPermission object and set its properties
@@ -73,7 +66,7 @@ namespace SuperbrainManagement.Controllers
                 {
                     UserPermission newPermission = new UserPermission
                     {
-                        IdUser = idUserAccount, // Assuming IdUser is a property in your UserPermission entity
+                        IdUser = idInput, // Assuming IdUser is a property in your UserPermission entity
                         IdPermission = per.Id, // Assuming IdPermission is a property in your UserPermission entity
                         IsRead = false,
                         IsDelete = false,
@@ -86,124 +79,93 @@ namespace SuperbrainManagement.Controllers
                     // Submit changes to persist the new record to the database
 
                 }
-                data = loaddatapermission(idUserAccount);
+                Model = LoadDataPermission(idInput);
             }
+            // Sử dụng model ở đây (ví dụ: lưu vào session, truyền vào view, ...)
 
-            return Json(data, JsonRequestBehavior.AllowGet);
+
+
+            TempData["data"] = Model;
+            return Json(Model, JsonRequestBehavior.AllowGet);
         }
-        public List<Object> loaddatapermission(int id)
+        public List<Innerjoin> LoadDataPermission(int idInput)
         {
-            List<PermissionCategory> permissionCategorys = Connect.Select<PermissionCategory>("select * from PermissionCategory");
-            List<object> data = new List<object>();
-            Session["iduseraccount"] = id;
-            foreach (var permissionCategory in permissionCategorys)
+            List<Innerjoin> Model = new List<Innerjoin>();
+            List<PermissionCategory> permissionCategories = Connect.Select<PermissionCategory>("select * from PermissionCategory");
+            if (permissionCategories != null)
             {
-
-                var dataPermissionCategorywithlistper = new
+                foreach (PermissionCategory permissionCategory in permissionCategories)
                 {
-                    Name = permissionCategory.Name,
-                    code = permissionCategory.Code,
-                    Permissions = new List<Object>()
-                };
-                List<Permission> permissions = Connect.Select<Permission>("Select * from Permission where IdPermissionCategory='" + permissionCategory.Id + "'");
-                foreach (var permission in permissions)
-                {
-                    UserPermission userPermission = Connect.SelectSingle<UserPermission>("select * from UserPermission where IdUser = '" + id + "' AND IdPermission = '" + permission.Id + "'");
-                    var dataSingle = new
+                    Innerjoin innerjoin = new Innerjoin();
+                    innerjoin.Name = permissionCategory.Name;
+                    List<Permissionse> permissionseslist = new List<Permissionse>();
+                    List<Permission> permissions = Connect.Select<Permission>("select * from Permission where IdPermissionCategory = '" + permissionCategory.Id + "' ");
+                    foreach (Permission permission in permissions)
                     {
+                        Permissionse permissionse = new Permissionse();
+                        UserPermission userPermission = Connect.SelectSingle<UserPermission>("select * from UserPermission where IdUser = '" + idInput + "' and IdPermission = '" + permission.Id + "'");
+                        permissionse.IsRead = (bool)userPermission.IsRead;
+                        permissionse.IsCreate = (bool)userPermission.IsCreate;
+                        permissionse.IsEdit = (bool)userPermission.IsEdit;
+                        permissionse.IsDelete = (bool)userPermission.IsDelete;
+                        permissionse.code = permission.Code;
+                        permissionse.Name = permission.Name;
+                        permissionse.id = permission.Id;
+                        permissionseslist.Add(permissionse);
+                    }
 
-                        IsRead = userPermission.IsRead,
-                        IsCreate = userPermission.IsCreate,
-                        IsEdit = userPermission.IsEdit,
-                        IsDelete = userPermission.IsDelete,
-                        code = permission.Code,
-                        Name = permission.Name,
-                        id = userPermission.IdPermission
-
-                    };
-                    dataPermissionCategorywithlistper.Permissions.Add(dataSingle);
+                    innerjoin.Permissions = permissionseslist;
+                    Model.Add(innerjoin);
                 }
-                data.Add(dataPermissionCategorywithlistper);
             }
-            return data;
-     
+            return Model;
         }
-
         [HttpPost]
-        public ActionResult SaveChange(List<UserPermission> Permissions)
+        public ActionResult SaveChange(List<UserpermissionRes> Permissions)
         {
             int id = Convert.ToInt32(Session["iduseraccount"]);
             List<UserPermission> users = Connect.Select<UserPermission>("select * from UserPermission where IdUser = '" + id + "'");
             if (users != null)
             {
-                foreach (UserPermission userPermission in Permissions)
+                foreach (UserpermissionRes userPermission in Permissions)
                 {
                     UserPermission userPermissionUpdate = db.UserPermissions.FirstOrDefault(x => x.IdUser == id && x.IdPermission == userPermission.IdPermission);
 
-                    userPermissionUpdate.IsRead = userPermission.IsRead;
-                    userPermissionUpdate.IsDelete = userPermission.IsDelete;
-                    userPermissionUpdate.IsCreate = userPermission.IsCreate;
-                    userPermissionUpdate.IsEdit = userPermission.IsEdit;
-
+                    userPermissionUpdate.IsRead = userPermission.IsRead == 1 ? true : false;
+                    userPermissionUpdate.IsDelete = userPermission.IsDelete == 1 ? true : false;
+                    userPermissionUpdate.IsCreate = userPermission.IsCreate == 1 ? true : false;
+                    userPermissionUpdate.IsEdit = userPermission.IsEdit == 1 ? true : false;
+        
                     db.SaveChanges();
                 }
             }
-
-
-
             return View();
         }
 
 
-        
+        // GET: Users
+        public ActionResult Index(string searching)
+        {
+           
+            return View(db.Users.Where(x=>x.Username.Contains(searching) || searching == null).ToList());
+        }
         [HttpPost]
-        public ActionResult updatestatus(int id, int status)
+        public ActionResult updateStatus(int id, int status)
         {
             User user = db.Users.Find(id);
             if (user != null)
             {
-                user.Active = status == 1 ? true : false;
+                user.Active = status == 1;
                 db.SaveChanges();
                 return Json(user.Active);
             }
             else
             {
-                return Json(false); // trả về false nếu không tìm thấy người dùng với id tương ứng
+                return Json(false); // Trả về false nếu không tìm thấy người dùng với id tương ứng
             }
         }
 
-        [HttpGet]
-         public ActionResult search(string keyword) 
-        {
-            DataTable DataTableUsers = Connect.SelectAll("select ROW_NUMBER() OVER (ORDER BY users.id) AS stt,users.Id,users.Name,users.Username,users.Active,users.DateCreate from dbo.[User] users inner join Branch branchs on branchs.Id = users.IdBranch where users.Name LIKE '%"+keyword+"%' \r\n");
-            StringBuilder htmlBuilder = new StringBuilder();
-            foreach (DataRow row in DataTableUsers.Rows)
-            {
-                htmlBuilder.Append("<tr class=\"bordered-bottom\">");
-                htmlBuilder.AppendFormat("<td>{0}</td>", row["stt"]);
-                htmlBuilder.AppendFormat("<td>{0}</td>", row["Username"]);
-                htmlBuilder.AppendFormat("<td>{0}</td>", row["Name"]);
-                htmlBuilder.Append("<td></td>"); // Placeholder for your additional data
-                htmlBuilder.Append("<td>1</td>"); // Placeholder for your additional data
-                htmlBuilder.AppendFormat("<td>{0}</td>", row["DateCreate"]);
-                htmlBuilder.Append("<td>");
-                htmlBuilder.Append("<label class=\"custom-control ios-switch\">");
-                htmlBuilder.AppendFormat("<input data-id=\"{0}\" value=\"{1}\" type=\"checkbox\" class=\"ios-switch-control-input\" onclick=\"ChangeStatus(this)\" {2}>",
-                    row["Id"],
-                    row["Active"] != DBNull.Value && Convert.ToBoolean(row["Active"]) ? 0 : 1,
-                    row["Active"] != DBNull.Value && Convert.ToBoolean(row["Active"]) ? "checked" : "");
-                htmlBuilder.Append("<span class=\"ios-switch-control-indicator\"></span>");
-                htmlBuilder.Append("</label>");
-                htmlBuilder.Append("</td>");
-                var id = Convert.ToInt32(row["Id"]);
-                var permissions = new List<string> { "Phân quyền" };
-                htmlBuilder.Append("<td></td>");
-                htmlBuilder.Append("<td>" + ConfigHtml.GenerateInlineList(Convert.ToInt32(row["Id"]), permissions) + "</td>"); // Placeholder for your additional data
-                htmlBuilder.Append("</tr>");
-            }
-            return Json(htmlBuilder.ToString(), JsonRequestBehavior.AllowGet);
 
-        }
 
     }
 }

@@ -48,17 +48,6 @@ namespace SuperbrainManagement.Controllers
 
             return data;
         }
-        public static DataSet ConvertToDataSet(DataTable dataTable)
-        {
-            // Tạo một DataSet mới
-            DataSet dataSet = new DataSet();
-
-            // Thêm DataTable vào DataSet
-            dataSet.Tables.Add(dataTable.Copy()); // Copy() để sao chép cấu trúc của DataTable
-
-            return dataSet;
-        }
-
         public static DataTable SelectAll(string query)
         {
             DataTable dataTable = new DataTable();
@@ -77,7 +66,6 @@ namespace SuperbrainManagement.Controllers
 
             return dataTable;
         }
-
 
         public static T SelectSingle<T>(string query) where T : new()
         {

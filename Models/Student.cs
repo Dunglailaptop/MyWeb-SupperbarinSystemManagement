@@ -24,7 +24,6 @@ namespace SuperbrainManagement.Models
             StudentJoinClasses = new HashSet<StudentJoinClass>();
             StudentVouchers = new HashSet<StudentVoucher>();
             Transactions = new HashSet<Transaction>();
-           
         }
 
         public int Id { get; set; }
@@ -112,10 +111,10 @@ namespace SuperbrainManagement.Models
         public int? Power { get; set; }
 
         public int? StatusStudy { get; set; }
+        public DateTime DateCreate { get; set; }
+        public int? IdUser { get; set; }
 
         public virtual Branch Branch { get; set; }
-      
- 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Competition> Competitions { get; set; }

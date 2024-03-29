@@ -49,12 +49,6 @@
     <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
       <HintPath>packages\BouncyCastle.Cryptography.2.2.1\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
     </Reference>
-    <Reference Include="DevExtreme.AspNet.Data, Version=3.0.0.0, Culture=neutral, PublicKeyToken=982f5dab1439d0f7, processorArchitecture=MSIL">
-      <HintPath>packages\DevExtreme.AspNet.Data.3.0.0\lib\net452\DevExtreme.AspNet.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExtreme.AspNet.Mvc">
-      <HintPath>lib\DevExtreme\DevExtreme.AspNet.Mvc.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -156,6 +150,12 @@
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -181,9 +181,6 @@
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.AspNet.WebApi.Client.5.2.4\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
@@ -205,12 +202,6 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.AspNet.WebApi.Core.5.2.4\lib\net45\System.Web.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http.WebHost, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.AspNet.WebApi.WebHost.5.2.4\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll</HintPath>
@@ -266,28 +257,27 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\BranchesController.cs" />
     <Compile Include="Controllers\BranchGroupsController.cs" />
     <Compile Include="Controllers\CheckUsers.cs" />
     <Compile Include="Controllers\ClassesController.cs" />
-    <Compile Include="Controllers\Config.cs" />
     <Compile Include="Controllers\Connect.cs" />
-    <Compile Include="Controllers\CourseRegistrationBill\ProgramsController.cs" />
-    <Compile Include="Controllers\CourseRegistrationBill\PromotionsController.cs" />
-    <Compile Include="Controllers\CourseRegistrationBill\RegistrationCoursesController.cs" />
-    <Compile Include="Controllers\CourseRegistrationBill\RegistrationOthersController.cs" />
-    <Compile Include="Controllers\CourseRegistrationBill\RegistrationProductsController.cs" />
-    <Compile Include="Controllers\CourseRegistrationBill\RevenueReferencesController.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
-    <Compile Include="Controllers\CourseRegistrationBill\RegistrationsController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Language.cs" />
     <Compile Include="Controllers\MD5Hash.cs" />
     <Compile Include="Controllers\ProgramsController.cs" />
-    <Compile Include="Controllers\SchedulesController.cs" />
+    <Compile Include="Controllers\RegistrationStudent\ProductCoursesController.cs" />
+    <Compile Include="Controllers\RegistrationStudent\ProductPromotionsController.cs" />
+    <Compile Include="Controllers\RegistrationStudent\ProductsController.cs" />
+    <Compile Include="Controllers\RegistrationStudent\RegistrationCoursesController.cs" />
+    <Compile Include="Controllers\RegistrationStudent\RegistrationOthersController.cs" />
+    <Compile Include="Controllers\RegistrationStudent\RegistrationProductsController.cs" />
+    <Compile Include="Controllers\RegistrationStudent\RegistrationsController.cs" />
+    <Compile Include="Controllers\RegistrationStudent\RevenueReferencesController.cs" />
+    <Compile Include="Controllers\RoomsController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -406,15 +396,11 @@
     <Compile Include="Models\WarehouseReceiption.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Views\ConfigView\ConfigHtml.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="assets\css\IconStatus.css" />
     <Content Include="assets\css\icons\tabler-icons\fonts\tabler-icons.svg" />
     <Content Include="assets\css\icons\tabler-icons\tabler-icons.css" />
-    <Content Include="assets\css\main.css" />
     <Content Include="assets\css\styles.css" />
-    <Content Include="assets\css\util.css" />
     <Content Include="assets\images\backgrounds\rocket.png" />
     <Content Include="assets\images\logos\icon web.png" />
     <Content Include="assets\images\logos\logo.png" />
@@ -569,23 +555,7 @@
     <Content Include="assets\libs\simplebar\src\scrollbar-width.js" />
     <Content Include="assets\libs\simplebar\src\simplebar.css" />
     <Content Include="assets\libs\simplebar\src\simplebar.js" />
-    <Content Include="Content\bootstrap-grid.css" />
-    <Content Include="Content\bootstrap-grid.min.css" />
-    <Content Include="Content\bootstrap-grid.rtl.css" />
-    <Content Include="Content\bootstrap-grid.rtl.min.css" />
-    <Content Include="Content\bootstrap-reboot.css" />
-    <Content Include="Content\bootstrap-reboot.min.css" />
-    <Content Include="Content\bootstrap-reboot.rtl.css" />
-    <Content Include="Content\bootstrap-reboot.rtl.min.css" />
-    <Content Include="Content\bootstrap-utilities.css" />
-    <Content Include="Content\bootstrap-utilities.min.css" />
-    <Content Include="Content\bootstrap-utilities.rtl.css" />
-    <Content Include="Content\bootstrap-utilities.rtl.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\bootstrap.rtl.css" />
-    <Content Include="Content\bootstrap.rtl.min.css" />
-    <Content Include="DevExtremeScaffolding_Readme.txt" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="assets\css\icons\tabler-icons\fonts\tabler-icons.eot" />
@@ -746,9 +716,6 @@
     <Content Include="assets\libs\bootstrap\scss\_variables.scss" />
     <Content Include="assets\libs\simplebar\dist\simplebar-core.esm.js.map" />
     <Content Include="assets\libs\simplebar\dist\simplebar.esm.js.map" />
-    <Content Include="Ajax\RevenueReferences.js" />
-    <Content Include="Ajax\Students.js" />
-    <Content Include="Ajax\Users.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -767,7 +734,6 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Ajax\Registrations.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -824,16 +790,21 @@
     <Content Include="Views\Classes\Details.cshtml" />
     <Content Include="Views\Classes\Edit.cshtml" />
     <Content Include="Views\Classes\Index.cshtml" />
-    <Content Include="Views\Schedules\Create.cshtml" />
-    <Content Include="Views\Schedules\Delete.cshtml" />
-    <Content Include="Views\Schedules\Details.cshtml" />
-    <Content Include="Views\Schedules\Edit.cshtml" />
-    <Content Include="Views\Schedules\Index.cshtml" />
+    <Content Include="Views\Rooms\Create.cshtml" />
+    <Content Include="Views\Rooms\Delete.cshtml" />
+    <Content Include="Views\Rooms\Details.cshtml" />
+    <Content Include="Views\Rooms\Edit.cshtml" />
+    <Content Include="Views\Rooms\Index.cshtml" />
     <Content Include="Views\Registrations\Create.cshtml" />
     <Content Include="Views\Registrations\Delete.cshtml" />
     <Content Include="Views\Registrations\Details.cshtml" />
     <Content Include="Views\Registrations\Edit.cshtml" />
     <Content Include="Views\Registrations\Index.cshtml" />
+    <Content Include="Views\RegistrationCourses\Create.cshtml" />
+    <Content Include="Views\RegistrationCourses\Delete.cshtml" />
+    <Content Include="Views\RegistrationCourses\Details.cshtml" />
+    <Content Include="Views\RegistrationCourses\Edit.cshtml" />
+    <Content Include="Views\RegistrationCourses\Index.cshtml" />
     <Content Include="Views\RegistrationProducts\Create.cshtml" />
     <Content Include="Views\RegistrationProducts\Delete.cshtml" />
     <Content Include="Views\RegistrationProducts\Details.cshtml" />
@@ -844,43 +815,31 @@
     <Content Include="Views\RegistrationOthers\Details.cshtml" />
     <Content Include="Views\RegistrationOthers\Edit.cshtml" />
     <Content Include="Views\RegistrationOthers\Index.cshtml" />
-    <Content Include="Views\RegistrationCourses\Create.cshtml" />
-    <Content Include="Views\RegistrationCourses\Delete.cshtml" />
-    <Content Include="Views\RegistrationCourses\Details.cshtml" />
-    <Content Include="Views\RegistrationCourses\Edit.cshtml" />
-    <Content Include="Views\RegistrationCourses\Index.cshtml" />
     <Content Include="Views\RevenueReferences\Create.cshtml" />
     <Content Include="Views\RevenueReferences\Delete.cshtml" />
     <Content Include="Views\RevenueReferences\Details.cshtml" />
     <Content Include="Views\RevenueReferences\Edit.cshtml" />
     <Content Include="Views\RevenueReferences\Index.cshtml" />
-    <Content Include="Views\Promotions\Create.cshtml" />
-    <Content Include="Views\Promotions\Delete.cshtml" />
-    <Content Include="Views\Promotions\Details.cshtml" />
-    <Content Include="Views\Promotions\Edit.cshtml" />
-    <Content Include="Views\Promotions\Index.cshtml" />
-    <Content Include="Views\Students\AddRegistration\AddRegistration.cshtml" />
+    <Content Include="Views\Students\AddCourseProgramOfStudents.cshtml" />
+    <Content Include="Views\Products\Create.cshtml" />
+    <Content Include="Views\Products\Delete.cshtml" />
+    <Content Include="Views\Products\Details.cshtml" />
+    <Content Include="Views\Products\Edit.cshtml" />
+    <Content Include="Views\Products\Index.cshtml" />
+    <Content Include="Views\ProductPromotions\Create.cshtml" />
+    <Content Include="Views\ProductPromotions\Delete.cshtml" />
+    <Content Include="Views\ProductPromotions\Details.cshtml" />
+    <Content Include="Views\ProductPromotions\Edit.cshtml" />
+    <Content Include="Views\ProductPromotions\Index.cshtml" />
+    <Content Include="Views\ProductCourses\Create.cshtml" />
+    <Content Include="Views\ProductCourses\Delete.cshtml" />
+    <Content Include="Views\ProductCourses\Details.cshtml" />
+    <Content Include="Views\ProductCourses\Edit.cshtml" />
+    <Content Include="Views\ProductCourses\Index.cshtml" />
+    <Content Include="Views\Students\RegistrationPrints.cshtml" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Authorization\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\bootstrap.rtl.min.css.map" />
-    <Content Include="Content\bootstrap.rtl.css.map" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-utilities.rtl.min.css.map" />
-    <Content Include="Content\bootstrap-utilities.rtl.css.map" />
-    <Content Include="Content\bootstrap-utilities.min.css.map" />
-    <Content Include="Content\bootstrap-utilities.css.map" />
-    <Content Include="Content\bootstrap-reboot.rtl.min.css.map" />
-    <Content Include="Content\bootstrap-reboot.rtl.css.map" />
-    <Content Include="Content\bootstrap-reboot.min.css.map" />
-    <Content Include="Content\bootstrap-reboot.css.map" />
-    <Content Include="Content\bootstrap-grid.rtl.min.css.map" />
-    <Content Include="Content\bootstrap-grid.rtl.css.map" />
-    <Content Include="Content\bootstrap-grid.min.css.map" />
-    <Content Include="Content\bootstrap-grid.css.map" />
     <None Include="packages.config" />
     <Content Include="Views\Authentication\Index.cshtml" />
     <Content Include="Views\Authentication\Forgot.cshtml" />

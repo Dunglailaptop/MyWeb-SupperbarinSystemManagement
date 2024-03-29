@@ -1,99 +1,89 @@
-﻿
+﻿@model IEnumerable<SuperbrainManagement.Models.Student>
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
-@section Scripts  {
-   
-    <script src="~/Ajax/Students.js"></script>
-
-
     
 }
- <div class="row wrapper">
-     <div class="col-sm-6">
-         <div class="input-group">
-             <input type="text" id="searchtxt" name="searchtxt" class="input-sm form-control" placeholder="Tên">
-             <span class="input-group-btn" >
-                 <button style="height: 40px;     background-color: blue;" class="btn btn-sm btn-warning" type="button" id="search">
-                     Tìm kiếm
-                 </button>
-                     <button style="height: 40px;     background-color: blue;" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      Thêm mới
-                   </button>
-             </span>
-             <span id="statusloading" style="position:absolute"></span>
-         </div>
-     </div>
- </div>
-<table class="table table-striped">
-    <tr>
-        <th>
-         MÃ HV
-        </th>
-       
-        <th>
-         HỌ TÊN
-        </th>
-        <th>
-          EMAIL
-        </th>
-        <th>
-           QUẢN LÝ
-        </th>
-        
-        <th>
-            CHỨC NĂNG
-        </th>
-    </tr>
-    <tbody id="databody" data-url="@Url.Action("loaddata", "Students")">
-       
-    
-        
-    </tbody>
 
-
-</table>
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="padding-right: 200px;margin-right: 500px;height: 100%;">
-        <div class="modal-content" style="height:70%;width: 600px;">
-            <div class="modal-header">
-                <h5 class="modal-title style" id="exampleModalLabel">Thêm học sinh</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="row">
+    <div class="col col-md-4 col-sm-12">
+        <form action="/Branches" method="get">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="searchString" placeholder="Tìm kiếm" value="@ViewBag.CurrentFilter ">
+                <button class="input-group-text bg-success" id="basic-addon2" type="submit"><i class="ti ti-search text-white"></i></button>
             </div>
-            <div class="modal-body">
-        
-
-                <div class="form-group row mt-2">
-                    <label class="col-lg-3 col-form-label form-control-label size">Họ tên</label>
-                    <div class="col-lg-9">
-                        <input class="form-control" name="Name" type="email" value="" id="Name" >
-                    </div>
-                </div>
-            
-                <div class="form-group row mt-2">
-                    <label class="col-lg-3 col-form-label form-control-label size">Số điện thoại</label>
-                    <div class="col-lg-9">
-                        <input class="form-control" name="Phone" type="email" value="0" id="Phone">
-                    </div>
-                </div>
-                <div class="form-group row mt-2">
-                    <label class="col-lg-3 col-form-label form-control-label size">Email</label>
-                    <div class="col-lg-9">
-                        <input class="form-control" name="Email" type="email" value="" id="Email" >
-                    </div>
-                </div>
-                    <div class="form-group row mt-2">
-        <label class="col-lg-3 col-form-label form-control-label size">code</label>
-        <div class="col-lg-9">
-            <input class="form-control" type="email" name="Code" value="" id="Code" >
-        </div>
+        </form>
     </div>
-                <button type="button" class="btn btn-success" id="datacreate" onclick="create()"  data-url="@Url.Action("savechange", "Students")">
-                    Thêm khóa học
-                 </button>
-            </div>
-
+    <div class="col col-md-8 col-sm-12 text-right" style="text-align:right;">
+        <div class="me-0 btn btn-md p-0">
+            <button class="btn btn-md btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="ti ti-arrows-sort"></i> Sắp xếp theo
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="@Url.Action("Index", new { sortOrder = "name", currentFilter = ViewBag.CurrentFilter, searchString = ViewBag.CurrentFilter })"><i class="ti ti-sort-a-z"></i> Tên A-Z</a></li>
+                <li><a class="dropdown-item" href="@Url.Action("Index", new { sortOrder = "name", currentFilter = ViewBag.CurrentFilter, searchString = ViewBag.CurrentFilter })"><i class="ti ti-sort-a-z"></i> Tên A-Z</a></li>
+                <li><a class="dropdown-item" href="@Url.Action("Index", new { sortOrder = "name_desc", currentFilter = ViewBag.CurrentFilter, searchString = ViewBag.CurrentFilter })"><i class="ti ti-sort-z-a"></i> Tên Z-A</a></li>
+                <li><a class="dropdown-item" href="@Url.Action("Index", new { sortOrder = "date", currentFilter = ViewBag.CurrentFilter, searchString = ViewBag.CurrentFilter })"><i class="ti ti-sort-ascending"></i> Mới nhất</a></li>
+                <li><a class="dropdown-item" href="@Url.Action("Index", new { sortOrder = "date_desc", currentFilter = ViewBag.CurrentFilter, searchString = ViewBag.CurrentFilter })"><i class="ti ti-sort-descending"></i> Cũ nhất</a></li>
+            </ul>
         </div>
+        <a href="" class="btn btn-md btn-outline-success"><i class="ti ti-upload"></i></a>
+        <a href="" class="btn btn-md btn-outline-danger"><i class="ti ti-download"></i></a>
+        <a href="/branches/create" class="btn btn-md btn-success ms-0"><i class="ti ti-circle-plus"></i> Thêm mới</a>
     </div>
 </div>
+<table class="table fs-3">
+    <thead class="bg-success text-white rounded-1">
+        <tr>
+            <th class="text-center">MÃ HV</th>
+            <th class="text-center">HỌ TÊN</th>
+            <th>EMAIL</th>
+            <th> SDT</th>
+            <th>CHỨC NĂNG</th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+           
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+           
+            <td>
+                <a href="/branches/edit/@item.Id" class="me-1"><i class="ti ti-edit text-primary"></i></a>
+                <a href="/branches/delete/@item.Id" class="me-1"><i class="ti ti-trash text-danger"></i></a>
+                <a class="text-warning" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="ti ti-dots-vertical"></i>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="@Url.Action("AddCourseProgramOfStudents","Students",new {IdStudent = item.Id})"><i class="ti ti-settings"></i> Đăng ký khóa học</a></li>
+            
+                </ul>
+            </td>
+        </tr>
+     
+    }
+</table>
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        @*@Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions { LiElementClasses = new string[] { "page-item" } })*@
+    </ul>
+</nav>
+<script>
+    function onchange_active() {
+        //Script Onchange
+        showSuccess("Onchange", 2000);
+    }
+</script>

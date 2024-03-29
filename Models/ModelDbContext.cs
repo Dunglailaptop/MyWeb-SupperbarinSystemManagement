@@ -937,12 +937,10 @@ namespace SuperbrainManagement.Models
                 .WithOptional(e => e.Student)
                 .HasForeignKey(e => e.IdStudent);
 
-      
-
             modelBuilder.Entity<StudentVoucher>()
                 .Property(e => e.Voucher)
                 .HasPrecision(18, 0);
-         
+
             modelBuilder.Entity<Supplier>()
                 .Property(e => e.Phone)
                 .IsUnicode(false);

@@ -5,7 +5,7 @@ function load_data() {
         url:url,
         type: 'GET',
         data: {
-
+            keyword: $("#searchtxt").val()
         },
         success: function (data) {
             console.log(data);
@@ -57,38 +57,7 @@ function create() {
 }
 
 
-$('#searchtxt').on('input', function () {
-    // Perform AJAX call when the value of the input field changes
-    $.ajax({
-        url: '/Students/Search',
-        type: 'GET',
-        data: {
-            keyword: $(this).val() // Get the current value of the input field
-        },
-        dataType: 'json',
-        success: function (data) {
-            // Xóa nội dung cũ của bảng
-            $("#databody").empty();
 
-            // Thêm dữ liệu mới vào bảng
-            $.each(data, function (index, student) {
-                var row = "<tr>"
-                    + "<td>" + student.Code + "</td>"
-                    + "<td>" + student.Name + "</td>"
-                    + "<td>" + student.Email + "</td>"
-                    + "<td>" + student.Phone + "</td>"
-                    + "<td>" + generateListInline(student.Id) + "</td>"
-                    + "</tr>";
-
-                $("#databody").append(row);
-            });
-        },
-        error: function () {
-            console.log('Error occurred while fetching data.');
-        }
-    });
-
-});
 function generateListInline(id) {
     return `
         <ul class="list-inline mb-0" style="width:200px;">

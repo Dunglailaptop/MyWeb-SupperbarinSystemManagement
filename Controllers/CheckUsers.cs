@@ -3,7 +3,6 @@ using Org.BouncyCastle.Asn1.Ocsp;
 using SuperbrainManagement.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Web;
 
@@ -11,7 +10,7 @@ namespace SuperbrainManagement.Controllers
 {
     public class CheckUsers
     {
-    
+        public ModelDbContext db = new ModelDbContext();
         public static bool checkcookielogin()
         {
             try
@@ -46,62 +45,62 @@ namespace SuperbrainManagement.Controllers
             catch { return ""; }
         }
         /// <summary>
+        /// Lấy IdUser đăng nhập
+        /// </summary>
+        /// <returns></returns>
+        public static int? idBranch()
+        {
+            try
+            {
+                MD5Hash md5 = new MD5Hash();
+                string idUser = md5.Decrypt(System.Web.HttpContext.Current.Request.Cookies["check"]["iduser"].ToString());
+                if(idUser == "")
+                {
+                    return 0;
+                }else
+                {
+                    ModelDbContext db = new ModelDbContext();
+                    var us = db.Users.Find(int.Parse(idUser));
+                    return us.IdBranch;
+                }    
+            }
+            catch { return 0; }
+        }
+        /// <summary>
         /// Code check phân quyền của user
         /// </summary>
-                public static string checkRole(int IdpermissionCategory)
+        public static string checkRole(int IdpermissionCategory)
+        {
+            try
+            {
+                MD5Hash md5 = new MD5Hash();
+                string iduser = System.Web.HttpContext.Current.Request.Cookies["check"]["iduser"].ToString();
+                if(iduser=="") { return iduser; }
+                else
                 {
-                        try
+                    iduser = md5.Decrypt(iduser.ToString());
+                    List<Permission> permission = Connect.Select<Permission>("select * from Permission per where per.IdPermissionCategory = '" + IdpermissionCategory + "'");
+                    if (permission != null)
+                    {
+                        foreach (Permission permissiones in permission)
                         {
-                            MD5Hash md5 = new MD5Hash();
-                            string iduser = System.Web.HttpContext.Current.Request.Cookies["check"]["iduser"].ToString();
-                            iduser = md5.Decrypt(iduser.ToString());
-                            //if (iduser != null)
-                            //{
-                            //    return iduser;
-                            //}
-                            List<Permission> permission = Connect.Select<Permission>("select * from Permission per where per.IdPermissionCategory = '" + IdpermissionCategory + "'");
-                            if (permission != null)
+                            List<UserPermission> userpermission = Connect.Select<UserPermission>("select * from UserPermission where IdPermission = '" + permissiones.Id + "' and IdUser = '" + iduser + "' ");
+                            foreach (UserPermission user in userpermission)
                             {
-                                foreach (Permission permissiones in permission)
+                                if (user.IsRead == true || user.IsEdit == true || user.IsCreate == true || user.IsDelete == true)
                                 {
-                                    List<UserPermission> userpermission = Connect.Select<UserPermission>("select * from UserPermission where IdPermission = '" + permissiones.Id + "' and IdUser = '" + iduser + "' ");
-                                    foreach (UserPermission user in userpermission)
-                                    {
-                                        if (user.IsRead == true || user.IsEdit == true || user.IsCreate == true || user.IsDelete == true)
-                                        {
-                                            return "";
-                                        }
-                                    }
+                                    return "";
                                 }
                             }
-                            return "hideof"; // Trả về chuỗi "hideof" nếu không có quyền truy cậ
-                        }catch
-                        {
-
                         }
-                     return null;
-            
+                    }
+                    return "hideof"; // Trả về chuỗi "hideof" nếu không có quyền truy cập
                 }
-        //get data category 
-       
-        public static List<Permission> loaddataCategory(int id)
-        {
-            MD5Hash md5 = new MD5Hash();
-            string iduser = System.Web.HttpContext.Current.Request.Cookies["check"]["iduser"].ToString();
-            iduser = md5.Decrypt(iduser.ToString());
-        
-            ModelDbContext db = new ModelDbContext();
-        List<Permission> permissionCategories = new List<Permission>();
-            permissionCategories = db.Permissions.Where(x=>x.IdPermissionCategory== id).ToList();
-           
-            return permissionCategories;
-
+            }
+            catch
+            {
+                return "";
+            }
         }
-        public static class ListMenu
-        {
-            public static string listName { get; set; }
-            public static int listNumber { get; set; }
-        }
-
     }
 }

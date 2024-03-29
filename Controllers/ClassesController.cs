@@ -38,8 +38,6 @@ namespace SuperbrainManagement.Controllers
         // GET: Classes/Create
         public ActionResult Create()
         {
-            ViewBag.IdBranch = new SelectList(db.Branches, "Id", "Logo");
-            ViewBag.IdUser = new SelectList(db.Users, "Id", "Name");
             return View();
         }
 
@@ -52,6 +50,9 @@ namespace SuperbrainManagement.Controllers
         {
             if (ModelState.IsValid)
             {
+                @class.DateCreate = DateTime.Now;
+                @class.IdBranch = CheckUsers.idBranch();
+                @class.IdUser =int.Parse(CheckUsers.iduser());
                 db.Classes.Add(@class);
                 db.SaveChanges();
                 return RedirectToAction("Index");

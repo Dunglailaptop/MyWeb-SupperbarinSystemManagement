@@ -195,33 +195,33 @@ $('#searchtxt').on('input', function () {
 
 });
 //function get data of combobox
-//function getDataBranch(idBranch) {
-//    if (idBranch != 0) {
-//        $.ajax({
-//            type: "GET",
-//            url: "",
-//            data: { idBranch = idBranch },
-//            success: function (result) {
-//                // Xử lý kết quả trả về từ máy chủ
-//                console.log(result);
-//            },
-//            error: function (xhr, status, error) {
-//                // Xử lý lỗi (nếu có)
-//                console.error(error);
-//            }
-//        });
-//    } else {
-//        $.ajax({
-//            type: "GET",
-//            url: "",
-//            success: function (result) {
-//                // Xử lý kết quả trả về từ máy chủ
-//                console.log(result);
-//            },
-//            error: function (xhr, status, error) {
-//                // Xử lý lỗi (nếu có)
-//                console.error(error);
-//            }
-//        });
-//    }
-//}
+function getDataBranch(idBranch) {
+    if (idBranch != 0) {
+        $.ajax({
+            type: "GET",
+            url: "", // Provide the appropriate URL here
+            data: { idBranch: idBranch }, // Corrected the assignment operator
+            success: function (result) {
+                // Handle the server response
+                console.log(result);
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                console.error(error);
+            }
+        });
+    } else {
+        $.ajax({
+            type: "GET",
+            url: "", // Provide the appropriate URL here
+            success: function (result) {
+                // Handle the server response
+                console.log(result);
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                console.error(error);
+            }
+        });
+    }
+}
